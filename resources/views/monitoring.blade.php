@@ -20,7 +20,9 @@
                 $("#sisa_makanan").load("{{ url('baca_sisamakanan') }}", function() {
                     updateChart();
                 });
-                $("#kekeruhan").load("{{ url('baca_kekeruhan') }}");
+                $("#kekeruhan").load("{{ url('baca_kekeruhan') }}", function() {
+                    updateKondisiKekeruhan();
+                });
             }, 1000);   //1000ms = 1s
         });
     </script>
@@ -97,6 +99,7 @@
                     <div class="card-body">
                         <div class="kekeruhan_air">
                             <span id="kekeruhan">0</span> <span>NTU</span>
+                            <span id="kondisi_kekeruhan">NILAI</span>
                         </div>
                     </div>
                 </div>
@@ -191,6 +194,20 @@
 
             myChart.data.datasets[0].data[0] = foodWasteValue;
             myChart.update();
+        }
+
+        function updateKondisiKekeruhan() {
+            const kekeruhanElement = document.getElementById("kekeruhan");
+            const kondisiKekeruhanElement = document.getElementById("kondisi_kekeruhan");
+            const kekeruhanValue = parseInt(kekeruhanElement.textContent, 10);
+
+            if (kekeruhanValue > 50) {
+                kondisiKekeruhanElement.textContent = "BERSIH";
+            } else if (kekeruhanValue > 40) {
+                kondisiKekeruhanElement.textContent = "BERAWAN";
+            } else {
+                kondisiKekeruhanElement.textContent = "KOTOR";
+            }
         }
 
         function adjustCardHeight() {
